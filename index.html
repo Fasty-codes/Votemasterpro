@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoteMaster Pro - Advanced Voting System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="voting.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-vote-yea"></i> VoteMaster Pro</h1>
+            <p class="subtitle">Advanced voting system with controlled access and real-time results</p>
+            <div class="admin-controls">
+                <button class="btn btn-warning" id="reset-data-btn">
+                    <i class="fas fa-redo"></i> Reset All Data
+                </button>
+            </div>
+        </header>
+
+        <div class="dashboard">
+            <div class="card">
+                <h2><i class="fas fa-plus-circle"></i> Create New Election</h2>
+                <div class="form-group">
+                    <label for="election-name">Election Name</label>
+                    <input type="text" id="election-name" placeholder="Enter election name">
+                </div>
+
+                <div class="form-group">
+                    <label for="candidate-name">Candidate Name</label>
+                    <input type="text" id="candidate-name" placeholder="Enter candidate name">
+
+                    <div class="image-upload">
+                        <div class="image-preview" id="candidate-image-preview">
+                            <div class="placeholder">No Image</div>
+                        </div>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="candidate-image" accept="image/*">
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn" id="add-candidate-btn">
+                    <i class="fas fa-user-plus"></i> Add Candidate
+                </button>
+
+                <div class="candidate-list" id="candidate-list">
+                    <!-- Candidate items will be added here -->
+                </div>
+
+                <button class="btn btn-success" id="create-election-btn">
+                    <i class="fas fa-check-circle"></i> Create Election
+                </button>
+
+                <!-- Admin Panel -->
+                <div class="admin-panel">
+                    <h3><i class="fas fa-lock"></i> Admin Settings</h3>
+                    <div class="form-group">
+                        <label for="admin-password">Set Finish Election Password</label>
+                        <input type="password" id="admin-password" placeholder="Enter new password">
+                        <button class="btn btn-small" id="set-password-btn" style="margin-top: 10px;">
+                            <i class="fas fa-save"></i> Set Password
+                        </button>
+                    </div>
+                    <div class="password-display">
+                        <i class="fas fa-key"></i>
+                        <span>Current Password: <span id="current-password-display">Not Set</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-list-alt"></i> Existing Elections</h2>
+                <ul class="election-list" id="election-list">
+                    <!-- Election items will be added here -->
+                </ul>
+            </div>
+        </div>
+
+        <div class="voting-section" id="voting-section">
+            <div class="voting-header">
+                <h2 id="voting-election-name">Election Name</h2>
+                <button class="btn btn-danger" id="finish-election-btn">
+                    <i class="fas fa-flag-checkered"></i> Finish Election
+                </button>
+            </div>
+
+            <div class="voting-info">
+                <div class="info-card">
+                    <h3>Total Votes</h3>
+                    <p id="total-votes">0</p>
+                </div>
+                <div class="info-card">
+                    <h3>Voting Status</h3>
+                    <p id="voting-status">Ready</p>
+                </div>
+                <div class="info-card">
+                    <h3>Next Vote In</h3>
+                    <p id="next-vote-timer">0s</p>
+                </div>
+            </div>
+
+            <div class="candidates-grid" id="candidates-grid">
+                <!-- Candidate cards will be added here -->
+            </div>
+
+            <div class="countdown" id="countdown">5</div>
+
+            <button class="btn btn-success vote-btn" id="vote-btn">
+                <i class="fas fa-vote-yea"></i> Submit Vote
+            </button>
+        </div>
+
+        <div class="leaderboard" id="leaderboard">
+            <div class="results-header">
+                <h2><i class="fas fa-trophy"></i> Election Results</h2>
+                <button class="btn" id="back-to-dashboard-btn">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </button>
+            </div>
+
+            <div class="results-info">
+                <div class="info-card">
+                    <h3>Total Votes</h3>
+                    <p id="results-total-votes">0</p>
+                </div>
+                <div class="info-card">
+                    <h3>Leading Candidate</h3>
+                    <p id="leading-candidate">-</p>
+                </div>
+                <div class="info-card">
+                    <h3>Vote Difference</h3>
+                    <p id="vote-difference">-</p>
+                </div>
+            </div>
+
+            <div id="leaderboard-results">
+                <!-- Leaderboard items will be added here -->
+            </div>
+
+            <div class="charts-section">
+                <div class="chart-container">
+                    <h3><i class="fas fa-chart-bar"></i> Vote Distribution</h3>
+                    <div class="chart" id="bar-chart">
+                        <!-- Bar chart will be generated here -->
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3><i class="fas fa-chart-pie"></i> Results Overview</h3>
+                    <div class="chart">
+                        <div class="pie-chart-container">
+                            <div class="pie-chart" id="pie-chart">
+                                <!-- Pie chart will be generated here -->
+                            </div>
+                            <div class="pie-center" id="pie-center">Total</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirmation Modal -->
+        <div class="modal" id="confirmation-modal">
+            <div class="modal-content">
+                <h3><i class="fas fa-exclamation-triangle"></i> Confirm Action</h3>
+                <p id="confirmation-text">Are you sure you want to finish this election?</p>
+                <div class="modal-buttons">
+                    <button class="btn btn-danger" id="confirm-btn">Yes, Confirm</button>
+                    <button class="btn" id="cancel-btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Password Modal -->
+        <div class="modal" id="password-modal">
+            <div class="modal-content">
+                <h3><i class="fas fa-lock"></i> Admin Password Required</h3>
+                <p>Please enter the admin password to finish this election:</p>
+                <div class="password-form">
+                    <input type="password" id="password-input" placeholder="Enter admin password">
+                </div>
+                <div class="modal-buttons">
+                    <button class="btn btn-danger" id="verify-password-btn">Finish Election</button>
+                    <button class="btn" id="cancel-password-btn">Cancel</button>
+                </div>
+                <p style="color: var(--danger); font-size: 0.9rem; margin-top: 15px; display: none;" id="password-error">
+                    <i class="fas fa-exclamation-circle"></i> Incorrect password!
+                </p>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div class="modal" id="success-modal">
+            <div class="modal-content">
+                <h3><i class="fas fa-check-circle" style="color: var(--success);"></i> Success!</h3>
+                <p id="success-text">Your vote has been submitted successfully!</p>
+                <button class="btn btn-success" id="success-ok-btn">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="voting.js"></script>
+</body>
+</html>
